@@ -1,0 +1,31 @@
+<!--
+  ~ Copyright 2016 Bobby
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="24dp"
+        android:height="24dp"
+        android:viewportHeight="24.0"
+        android:viewportWidth="26.854">
+    <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M8.614,22.262Z"/>
+    <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M14.854,0a11.993,11.993 0,0 0,-12 12,12.289 12.289,0 0,0 0.451,3.286L7.182,12.831a7.292,7.292 0,0 1,-0.051 -0.883,7.673 7.673,0 1,1 7.672,7.673L14.644,19.621a11.338,11.338 0,0 1,-6.021 2.637A12,12 0,1 0,14.854 0Z"/>
+    <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M17,12.115a9.415,9.415 0,0 0,-0.372 -2.629A9.472,9.472 0,0 1,7.569 16.326v-1.425c0,-0.606 -0.416,-0.831 -0.926,-0.511L0.383,18.366a0.643,0.643 0,0 0,0 1.176l6.259,3.975c0.511,0.321 0.926,0.095 0.926,-0.511v-1.425A9.456,9.456 0,0 0,17 12.115Z"/>
+</vector>

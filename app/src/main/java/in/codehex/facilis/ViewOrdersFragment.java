@@ -53,7 +53,7 @@ import in.codehex.facilis.app.AppController;
 import in.codehex.facilis.app.Config;
 import in.codehex.facilis.app.ItemClickListener;
 import in.codehex.facilis.helper.CircleTransform;
-import in.codehex.facilis.model.ViewOrderItem;
+import in.codehex.facilis.model.OrderItem;
 
 
 /**
@@ -63,15 +63,16 @@ public class ViewOrdersFragment extends Fragment {
 
     SwipeRefreshLayout mRefreshLayout;
     RecyclerView mRecyclerView;
-    List<ViewOrderItem> mViewOrderItemList;
+    List<OrderItem> mOrderItemList;
     ViewOrdersAdapter mAdapter;
     SharedPreferences userPreferences;
     LinearLayoutManager mLayoutManager;
     int mCount = 0;
+    boolean isEnded = false;
     int firstVisibleItem, visibleItemCount, totalItemCount;
-    private int previousTotal = 0;
-    private boolean loading = true;
-    private int visibleThreshold = 5;
+    int previousTotal = 0;
+    boolean loading = true;
+    int visibleThreshold = 5;
 
     public ViewOrdersFragment() {
         // Required empty public constructor
@@ -99,9 +100,9 @@ public class ViewOrdersFragment extends Fragment {
         mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.view_order_list);
 
-        mViewOrderItemList = new ArrayList<>();
+        mOrderItemList = new ArrayList<>();
         mLayoutManager = new LinearLayoutManager(getContext());
-        mAdapter = new ViewOrdersAdapter(getContext(), mViewOrderItemList);
+        mAdapter = new ViewOrdersAdapter(getContext(), mOrderItemList);
         userPreferences = getActivity().getSharedPreferences(Config.PREF_USER,
                 Context.MODE_PRIVATE);
     }
@@ -142,7 +143,7 @@ public class ViewOrdersFragment extends Fragment {
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                resetCount();
+                resetData();
                 mRefreshLayout.setRefreshing(true);
                 processOrders();
             }
@@ -150,7 +151,7 @@ public class ViewOrdersFragment extends Fragment {
         mRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                resetCount();
+                resetData();
                 mRefreshLayout.setRefreshing(true);
                 processOrders();
             }
@@ -158,12 +159,13 @@ public class ViewOrdersFragment extends Fragment {
     }
 
     /**
-     * Reset the data for all the integers.
+     * Reset the count for all the integers and values of booleans to default.
      */
-    private void resetCount() {
+    private void resetData() {
         mCount = 0;
         previousTotal = 0;
         loading = true;
+        isEnded = false;
     }
 
     /**
@@ -187,36 +189,43 @@ public class ViewOrdersFragment extends Fragment {
             @Override
             public void onResponse(String response) {
                 if (mCount == 0) {
-                    mViewOrderItemList.clear();
+                    mOrderItemList.clear();
                     mAdapter.notifyDataSetChanged();
                 }
                 mRefreshLayout.setRefreshing(false);
                 try {
                     JSONArray jsonArray = new JSONArray(response);
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject object = jsonArray.getJSONObject(i);
-                        int id = object.getInt(Config.KEY_API_ID);
-                        int orderId = object.getInt(Config.KEY_API_ORDER_ID);
-                        JSONObject postedByObject = object.getJSONObject(Config.KEY_API_POSTED_BY);
-                        int postedById = postedByObject
-                                .getInt(Config.KEY_API_POSTED_BY_ID);
-                        String postedByFirstName = postedByObject
-                                .getString(Config.KEY_API_POSTED_BY_FIRST_NAME);
-                        String postedByLastName = postedByObject
-                                .getString(Config.KEY_API_POSTED_BY_LAST_NAME);
-                        String postedDate = object.getString(Config.KEY_API_POSTED_DATE);
-                        String days = object.getString(Config.KEY_API_DAYS);
-                        int leastCost = object.getInt(Config.KEY_API_LEAST_COST);
-                        int average = object.getInt(Config.KEY_API_AVERAGE);
-                        int counter = object.getInt(Config.KEY_API_COUNTER);
-                        String userImg = object.getString(Config.KEY_API_USER_IMAGE);
-                        mViewOrderItemList.add(mCount + i, new ViewOrderItem(id, orderId,
-                                postedById, leastCost, average, counter,
-                                postedByFirstName, postedByLastName,
-                                postedDate, days, userImg));
-                        mAdapter.notifyItemInserted(mCount + i);
+                    // TODO: check for no_orders
+                    if (jsonArray.length() < 10)
+                        isEnded = true;
+
+                    if (!isEnded) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            int id = object.getInt(Config.KEY_API_ID);
+                            int orderId = object.getInt(Config.KEY_API_ORDER_ID);
+                            JSONObject postedByObject = object
+                                    .getJSONObject(Config.KEY_API_POSTED_BY);
+                            int postedById = postedByObject
+                                    .getInt(Config.KEY_API_POSTED_BY_ID);
+                            String postedByFirstName = postedByObject
+                                    .getString(Config.KEY_API_POSTED_BY_FIRST_NAME);
+                            String postedByLastName = postedByObject
+                                    .getString(Config.KEY_API_POSTED_BY_LAST_NAME);
+                            String postedDate = object.getString(Config.KEY_API_POSTED_DATE);
+                            String days = object.getString(Config.KEY_API_DAYS);
+                            int leastCost = object.getInt(Config.KEY_API_LEAST_COST);
+                            int average = object.getInt(Config.KEY_API_AVERAGE);
+                            int counter = object.getInt(Config.KEY_API_COUNTER);
+                            String userImg = object.getString(Config.KEY_API_USER_IMAGE);
+                            mOrderItemList.add(mCount + i, new OrderItem(id, orderId,
+                                    postedById, leastCost, average, counter,
+                                    postedByFirstName, postedByLastName,
+                                    postedDate, days, userImg));
+                            mAdapter.notifyItemInserted(mCount + i);
+                        }
+                        mCount = mCount + 10;
                     }
-                    mCount = mCount + 10;
                 } catch (JSONException e) {
                     // TODO: remove toast
                     Toast.makeText(getContext(),
@@ -276,11 +285,11 @@ public class ViewOrdersFragment extends Fragment {
             extends RecyclerView.Adapter<ViewOrdersAdapter.ViewOrdersHolder> {
 
         Context context;
-        List<ViewOrderItem> viewOrderItemList;
+        List<OrderItem> mOrderItemList;
 
-        public ViewOrdersAdapter(Context context, List<ViewOrderItem> viewOrderItemList) {
+        public ViewOrdersAdapter(Context context, List<OrderItem> mOrderItemList) {
             this.context = context;
-            this.viewOrderItemList = viewOrderItemList;
+            this.mOrderItemList = mOrderItemList;
         }
 
         @Override
@@ -292,13 +301,13 @@ public class ViewOrdersFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewOrdersHolder holder, int position) {
-            ViewOrderItem viewOrderItem = viewOrderItemList.get(position);
-            String name = viewOrderItem.getPostedByFirstName() + " "
-                    + viewOrderItem.getPostedByLastName();
-            String dp = viewOrderItem.getUserImg();
-            String duration = String.valueOf(viewOrderItem.getDays()) + " left";
-            String posted = String.valueOf(viewOrderItem.getPostedDate());
-            String item = String.valueOf(viewOrderItem.getCounter()) + " items";
+            OrderItem orderItem = mOrderItemList.get(position);
+            String name = orderItem.getPostedByFirstName() + " "
+                    + orderItem.getPostedByLastName();
+            String dp = orderItem.getUserImg();
+            String duration = String.valueOf(orderItem.getDays()) + " left";
+            String posted = String.valueOf(orderItem.getPostedDate());
+            String item = String.valueOf(orderItem.getCounter()) + " items";
             holder.textName.setText(name);
             Picasso.with(context).load(dp)
                     .placeholder(R.drawable.ic_person)
@@ -317,7 +326,7 @@ public class ViewOrdersFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return viewOrderItemList.size();
+            return mOrderItemList.size();
         }
 
         protected class ViewOrdersHolder extends RecyclerView.ViewHolder

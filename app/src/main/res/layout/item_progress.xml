@@ -15,18 +15,14 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <color name="primary">#2196F3</color>
-    <color name="primary_dark">#1976D2</color>
-    <color name="primary_light">#BBDEFB</color>
-    <color name="accent">#607D8B</color>
-    <color name="primary_text">#212121</color>
-    <color name="secondary_text">#727272</color>
-    <color name="icons">#FFFFFF</color>
-    <color name="divider">#B6B6B6</color>
-    <color name="shade_black">#B3000000</color>
-    <color name="shade_white">#20FFFFFF</color>
-    <color name="hint_white">#80FFFFFF</color>
-    <color name="status_green">#4CAF50</color>
-    <color name="status_red">#F44336</color>
-</resources>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:gravity="center"
+              android:layout_height="match_parent">
+
+    <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+</LinearLayout>

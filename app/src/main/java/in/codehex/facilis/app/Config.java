@@ -63,4 +63,9 @@ public class Config {
     public static final String KEY_API_COUNTER = "counter";
     public static final String KEY_API_USER_IMAGE = "user_image";
     public static final String KEY_API_DETAIL = "detail";
+    public static final String KEY_API_USER = "user";
+    public static final String KEY_API_ORDER = "order";
+    public static final String KEY_API_BIDDING_TIME = "bidding_time";
+    public static final String KEY_API_BID_COST = "bid_cost";
+    public static final String KEY_API_BID_STATUS = "bid_status";
 }

@@ -19,15 +19,15 @@ package in.codehex.facilis.model;
 /**
  * Created by Bobby on 10-05-2016
  */
-public class ViewOrderItem {
+public class OrderItem {
 
     private int id, orderId, postedById, leastCost, average, counter;
     private String postedByFirstName, postedByLastName, postedDate, days, userImg;
 
-    public ViewOrderItem(int id, int orderId, int postedById,
-                         int leastCost, int average, int counter,
-                         String postedByFirstName, String postedByLastName,
-                         String postedDate, String days, String userImg) {
+    public OrderItem(int id, int orderId, int postedById,
+                     int leastCost, int average, int counter,
+                     String postedByFirstName, String postedByLastName,
+                     String postedDate, String days, String userImg) {
         this.id = id;
         this.orderId = orderId;
         this.postedById = postedById;

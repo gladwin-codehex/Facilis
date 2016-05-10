@@ -21,6 +21,7 @@
     <string name="desc_bg">Background Image</string>
     <string name="desc_logo">Logo Image</string>
     <string name="desc_nav_header">Navigation Header Background Image</string>
+    <string name="desc_dp">Profile Icon</string>
 
     <string name="hint_email">Email</string>
     <string name="hint_pass">Password</string>
@@ -47,5 +48,8 @@
 
     <string name="text_forgot_pass">Forgot Password?</string>
     <string name="text_back_login">Go back to Login</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

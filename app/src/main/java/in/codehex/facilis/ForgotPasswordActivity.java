@@ -127,6 +127,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         try {
             jsonObject.put(Config.KEY_API_EMAIL, email);
         } catch (JSONException e) {
+            // TODO: remove toast
             Toast.makeText(ForgotPasswordActivity.this,
                     "Error occurred while generating data - "
                             + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -151,6 +152,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
                 NetworkResponse response = error.networkResponse;
+                // TODO: remove toast
                 if (response.statusCode == 400)
                     Toast.makeText(ForgotPasswordActivity.this,
                             "Error processing your request! Try again later!",

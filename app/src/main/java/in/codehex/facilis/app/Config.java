@@ -35,6 +35,7 @@ public class Config {
     public static final String KEY_PREF_USER_ID = "user_id";
     public static final String KEY_PREF_ROLE = "role";
     public static final String KEY_PREF_TOKEN = "token";
+    public static final String KEY_PREF_IS_FIRST_LOGIN = "is_first_login";
 
     public static final String KEY_API_USERNAME = "username";
     public static final String KEY_API_PASSWORD = "password";
@@ -46,4 +47,20 @@ public class Config {
     public static final String KEY_API_ROLE = "role";
     public static final String KEY_API_NON_FIELD_ERRORS = "non_field_errors";
     public static final String KEY_API_EMAIL = "email";
+    public static final String KEY_API_KEY = "api_key";
+    public static final String KEY_API_START = "start";
+    public static final String KEY_API_END = "end";
+    public static final String KEY_API_ID = "id";
+    public static final String KEY_API_ORDER_ID = "order_id";
+    public static final String KEY_API_POSTED_BY = "posted_by";
+    public static final String KEY_API_POSTED_BY_ID = "id";
+    public static final String KEY_API_POSTED_BY_FIRST_NAME = "first_name";
+    public static final String KEY_API_POSTED_BY_LAST_NAME = "last_name";
+    public static final String KEY_API_POSTED_DATE = "posted_date";
+    public static final String KEY_API_DAYS = "days";
+    public static final String KEY_API_LEAST_COST = "leastcost";
+    public static final String KEY_API_AVERAGE = "average";
+    public static final String KEY_API_COUNTER = "counter";
+    public static final String KEY_API_USER_IMAGE = "user_image";
+    public static final String KEY_API_DETAIL = "detail";
 }

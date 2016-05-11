@@ -195,7 +195,6 @@ public class ViewOrdersFragment extends Fragment {
                 mRefreshLayout.setRefreshing(false);
                 try {
                     JSONArray jsonArray = new JSONArray(response);
-                    // TODO: check for no_orders
                     if (jsonArray.length() < 10)
                         isEnded = true;
 
@@ -239,11 +238,22 @@ public class ViewOrdersFragment extends Fragment {
                 mRefreshLayout.setRefreshing(false);
                 NetworkResponse response = error.networkResponse;
                 try {
-                    byte[] data = response.data;
-                    String mError = new String(data);
-                    JSONObject errorObject = new JSONObject(mError);
-                    String errorData = errorObject.getString(Config.KEY_API_DETAIL);
-                    Toast.makeText(getContext(), errorData, Toast.LENGTH_SHORT).show();
+                    byte[] bytes = response.data;
+                    String data = new String(bytes);
+                    if (response.statusCode == 400) {
+                        JSONObject errorObject = new JSONObject(data);
+                        int mError = errorObject.getInt(Config.KEY_API_ERROR);
+                        String mMessage = errorObject.getString(Config.KEY_API_MESSAGE);
+                        if (mError == 400)
+                            isEnded = true;
+                        // TODO: remove toast
+                        Toast.makeText(getContext(), mMessage, Toast.LENGTH_SHORT).show();
+                    } else if (response.statusCode == 401) {
+                        JSONObject errorObject = new JSONObject(data);
+                        String errorData = errorObject.getString(Config.KEY_API_DETAIL);
+                        // TODO: remove toast
+                        Toast.makeText(getContext(), errorData, Toast.LENGTH_SHORT).show();
+                    }
                 } catch (JSONException e) {
                     // TODO: remove toast
                     Toast.makeText(getContext(),

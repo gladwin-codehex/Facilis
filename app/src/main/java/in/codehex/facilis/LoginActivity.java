@@ -35,6 +35,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -103,19 +104,19 @@ public class LoginActivity extends AppCompatActivity {
                 String email = editEmail.getText().toString().trim();
                 String pass = editPass.getText().toString().trim();
 
-                if (email.isEmpty())
+                if (TextUtils.isEmpty(email))
                     editEmail.setError(getString(R.string.error_email_empty));
                 else if (!isValidEmail(email))
                     editEmail.setError(getString(R.string.error_email_invalid));
 
-                if (pass.isEmpty())
+                if (TextUtils.isEmpty(pass))
                     editPass.setError(getString(R.string.error_pass_empty));
                 else if (pass.length() < 6)
                     editPass.setError(getString(R.string.error_pass_invalid));
 
 
-                if (!email.isEmpty() && isValidEmail(email)
-                        && !pass.isEmpty() && pass.length() >= 6)
+                if (!TextUtils.isEmpty(email) && isValidEmail(email)
+                        && !TextUtils.isEmpty(pass) && pass.length() >= 6)
                     processLogin(email, pass, mWifiInfo.getMacAddress());
             }
         });
@@ -175,7 +176,7 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putInt(Config.KEY_PREF_USER_ID, userId);
                     editor.putInt(Config.KEY_PREF_ROLE, role);
                     editor.putString(Config.KEY_PREF_TOKEN, token);
-                    editor.apply();
+                    editor.commit();
 
                     mIntent = new Intent(LoginActivity.this, MainActivity.class);
                     mIntent.addFlags(IntentCompat.FLAG_ACTIVITY_CLEAR_TASK

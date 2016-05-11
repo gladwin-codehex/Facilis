@@ -21,12 +21,10 @@ package in.codehex.facilis.app;
  */
 public class Config {
 
-    public static final String API_LOGIN = "http://codehex.officebuy.in/" +
-            "auth/obtain-token/";
-    public static final String API_FORGOT_PASS = "http://codehex.officebuy.in/" +
-            "auth/password/reset/confirm/";
-    public static final String API_VIEW_ORDERS = "http://codehex.officebuy.in/" +
-            "view_orders/";
+    public static final String API_DOMAIN_URL = "http://codehex.officebuy.in/";
+    public static final String API_LOGIN = API_DOMAIN_URL + "auth/obtain-token/";
+    public static final String API_FORGOT_PASS = API_DOMAIN_URL + "auth/password/reset/confirm/";
+    public static final String API_VIEW_ORDERS = API_DOMAIN_URL + "view_orders/";
 
     public static final String PREF_USER = "user";
 
@@ -68,4 +66,13 @@ public class Config {
     public static final String KEY_API_BIDDING_TIME = "bidding_time";
     public static final String KEY_API_BID_COST = "bid_cost";
     public static final String KEY_API_BID_STATUS = "bid_status";
+    public static final String KEY_API_NAME = "name";
+    public static final String KEY_API_QUANTITY = "quantity";
+    public static final String KEY_API_BRAND = "brand";
+    public static final String KEY_API_DESCRIPTION = "description";
+    public static final String KEY_API_DEL_CHARGE = "del_charge";
+    public static final String KEY_API_PERCENTAGE = "percentage";
+    public static final String KEY_API_ITEM_AMOUNT = "item_amount";
+    public static final String KEY_API_ERROR = "error";
+    public static final String KEY_API_MESSAGE = "message";
 }

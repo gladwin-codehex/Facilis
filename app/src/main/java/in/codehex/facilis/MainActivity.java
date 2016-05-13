@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Show the view bid item list based on the fragment which calls it.
+     * Show the bid item list based on the fragment which calls it.
      *
      * @param name    it can be active or previous or successful bid fragment.
      * @param orderId the order id of the item clicked.
@@ -257,6 +257,48 @@ public class MainActivity extends AppCompatActivity
                 bundle.putString(Config.KEY_BUNDLE_FRAGMENT, name);
                 bundle.putInt(Config.KEY_BUNDLE_ORDER_ID, orderId);
                 bundle.putInt(Config.KEY_BUNDLE_BID_ID, bidId);
+                fragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.layout_container, fragment);
+                fragmentTransaction.addToBackStack(name);
+                fragmentTransaction.commit();
+                break;
+        }
+    }
+
+    /**
+     * Show the order item list based on the fragment which calls it.
+     */
+    public void showOrderItems(String name, int orderId) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Place Bid");
+        }
+        Fragment fragment;
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Bundle bundle = new Bundle();
+        switch (name) {
+
+            case Config.KEY_FRAGMENT_ALL_DEALS:
+                fragment = new PlaceBidFragment();
+                bundle.putString(Config.KEY_BUNDLE_FRAGMENT, name);
+                bundle.putInt(Config.KEY_BUNDLE_ORDER_ID, orderId);
+                fragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.layout_container, fragment);
+                fragmentTransaction.addToBackStack(name);
+                fragmentTransaction.commit();
+                break;
+            case Config.KEY_FRAGMENT_HOT_DEALS:
+                fragment = new PlaceBidFragment();
+                bundle.putString(Config.KEY_BUNDLE_FRAGMENT, name);
+                bundle.putInt(Config.KEY_BUNDLE_ORDER_ID, orderId);
+                fragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.layout_container, fragment);
+                fragmentTransaction.addToBackStack(name);
+                fragmentTransaction.commit();
+                break;
+            case Config.KEY_FRAGMENT_LAST_MINUTE:
+                fragment = new PlaceBidFragment();
+                bundle.putString(Config.KEY_BUNDLE_FRAGMENT, name);
+                bundle.putInt(Config.KEY_BUNDLE_ORDER_ID, orderId);
                 fragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.layout_container, fragment);
                 fragmentTransaction.addToBackStack(name);

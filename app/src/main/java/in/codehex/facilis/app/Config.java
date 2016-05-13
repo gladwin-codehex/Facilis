@@ -47,6 +47,9 @@ public class Config {
     public static final String KEY_FRAGMENT_ACTIVE = "active";
     public static final String KEY_FRAGMENT_PREVIOUS = "previous";
     public static final String KEY_FRAGMENT_SUCCESSFUL = "successful";
+    public static final String KEY_FRAGMENT_ALL_DEALS = "all_deals";
+    public static final String KEY_FRAGMENT_HOT_DEALS = "hot_deals";
+    public static final String KEY_FRAGMENT_LAST_MINUTE = "last_minute";
 
     public static final String KEY_API_USERNAME = "username";
     public static final String KEY_API_PASSWORD = "password";

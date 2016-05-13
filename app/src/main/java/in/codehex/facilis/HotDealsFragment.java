@@ -311,7 +311,7 @@ public class HotDealsFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewOrdersHolder holder, int position) {
-            OrderItem orderItem = mOrderItemList.get(position);
+            final OrderItem orderItem = mOrderItemList.get(position);
             String name = orderItem.getPostedByFirstName() + " "
                     + orderItem.getPostedByLastName();
             String dp = orderItem.getUserImg();
@@ -329,7 +329,8 @@ public class HotDealsFragment extends Fragment {
             holder.setClickListener(new ItemClickListener() {
                 @Override
                 public void onClick(View view, int position, boolean isLongClick) {
-                    // TODO: go to place bid fragment
+                    ((MainActivity) getActivity()).showOrderItems(Config.KEY_FRAGMENT_HOT_DEALS,
+                            orderItem.getOrderId());
                 }
             });
         }

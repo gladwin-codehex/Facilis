@@ -37,7 +37,7 @@
         <ImageView android:layout_width="50dp"
                    android:id="@+id/img_dp"
                    android:contentDescription="@string/desc_dp"
-                   android:scaleType="fitCenter"
+                   android:scaleType="centerInside"
                    android:adjustViewBounds="true"
                    android:layout_margin="@dimen/lite"
                    android:layout_gravity="center"

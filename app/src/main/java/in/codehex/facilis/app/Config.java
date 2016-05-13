@@ -30,6 +30,8 @@ public class Config {
 
     public static final String TAB_TITLE[] = {"ALL DEALS", "HOT DEALS", "LAST MINUTE"};
 
+    public static final int REQUEST_PICK_IMAGE = 27;
+
     public static final String PREF_USER = "user";
     public static final String KEY_PREF_FIRST_NAME = "first_name";
     public static final String KEY_PREF_LAST_NAME = "last_name";

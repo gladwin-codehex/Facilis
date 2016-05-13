@@ -23,6 +23,9 @@
     <string name="desc_header_nav">Navigation Header Background Image</string>
     <string name="desc_dp">Profile Icon</string>
     <string name="desc_header_view_orders">View Orders Header Image</string>
+    <string name="desc_profile_camera">Camera Icon</string>
+
+    <string name="title_activity_profile">Profile</string>
 
     <string name="hint_email">Email</string>
     <string name="hint_pass">Password</string>

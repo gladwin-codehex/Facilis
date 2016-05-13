@@ -30,5 +30,6 @@
     <dimen name="card_elevation">4dp</dimen>
     <dimen name="nav_header_height">192dp</dimen>
     <dimen name="status_width">4dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 </resources>

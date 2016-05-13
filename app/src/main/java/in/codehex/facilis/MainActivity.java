@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity
                 showAlertLogout();
                 return true;
             case R.id.action_profile:
+                mIntent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(mIntent);
                 return true;
         }
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);

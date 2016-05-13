@@ -314,13 +314,14 @@ public class ActiveBidsFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ActiveBidsHolder holder, int position) {
-            BidItem bidItem = mBidItemList.get(position);
+            final BidItem bidItem = mBidItemList.get(position);
             String name = bidItem.getPostedByFirstName() + " "
                     + bidItem.getPostedByLastName();
             String dp = bidItem.getUserImg();
             String duration = String.valueOf(bidItem.getDays()) + " left";
             String posted = bidItem.getPostedDate();
             String amount = "\u20B9 " + String.valueOf(bidItem.getBidCost());
+
             holder.textName.setText(name);
             Picasso.with(context).load(dp)
                     .placeholder(R.drawable.ic_person)
@@ -332,7 +333,8 @@ public class ActiveBidsFragment extends Fragment {
             holder.setClickListener(new ItemClickListener() {
                 @Override
                 public void onClick(View view, int position, boolean isLongClick) {
-                    // TODO: go to place bid fragment
+                    ((MainActivity) getActivity()).showBidItems(Config.KEY_FRAGMENT_PREVIOUS,
+                            bidItem.getOrderId(), bidItem.getId());
                 }
             });
         }

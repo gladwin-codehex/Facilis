@@ -25,7 +25,7 @@ import android.view.ViewGroup;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment that is used to place bid for the {@link MainActivity} class.
  */
 public class PlaceBidFragment extends Fragment {
 

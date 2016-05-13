@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_logout:
                 showAlertLogout();
                 return true;
+            case R.id.action_profile:
+                return true;
         }
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
@@ -122,12 +124,11 @@ public class MainActivity extends AppCompatActivity
 
         if (!userPreferences.contains(Config.KEY_PREF_IS_FIRST_LOGIN)) {
             mDrawerLayout.openDrawer(GravityCompat.START);
-            userPreferences.edit().putBoolean(Config.KEY_PREF_IS_FIRST_LOGIN, false).apply();
+            userPreferences.edit().putBoolean(Config.KEY_PREF_IS_FIRST_LOGIN, false).commit();
         }
 
         selectDrawerItem(mNavigationView.getMenu().getItem(0).getItemId(),
                 mNavigationView.getMenu().getItem(0).getTitle().toString());
-
     }
 
     /**
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // TODO: send logout request to API
-                userPreferences.edit().clear().apply();
+                userPreferences.edit().clear().commit();
                 mIntent = new Intent(MainActivity.this, LoginActivity.class);
                 mIntent.addFlags(IntentCompat.FLAG_ACTIVITY_CLEAR_TASK
                         | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -211,6 +212,54 @@ public class MainActivity extends AppCompatActivity
                 return true;
             default:
                 return true;
+        }
+    }
+
+    /**
+     * Show the view bid item list based on the fragment which calls it.
+     *
+     * @param name    it can be active or previous or successful bid fragment.
+     * @param orderId the order id of the item clicked.
+     * @param bidId   the bid id of the item clicked.
+     */
+    public void showBidItems(String name, int orderId, int bidId) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Ordered Items");
+        }
+        Fragment fragment;
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Bundle bundle = new Bundle();
+        switch (name) {
+            case Config.KEY_FRAGMENT_ACTIVE:
+                fragment = new ViewBidItemsFragment();
+                bundle.putString(Config.KEY_BUNDLE_FRAGMENT, name);
+                bundle.putInt(Config.KEY_BUNDLE_ORDER_ID, orderId);
+                bundle.putInt(Config.KEY_BUNDLE_BID_ID, bidId);
+                fragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.layout_container, fragment);
+                fragmentTransaction.addToBackStack(name);
+                fragmentTransaction.commit();
+                break;
+            case Config.KEY_FRAGMENT_PREVIOUS:
+                fragment = new ViewBidItemsFragment();
+                bundle.putString(Config.KEY_BUNDLE_FRAGMENT, name);
+                bundle.putInt(Config.KEY_BUNDLE_ORDER_ID, orderId);
+                bundle.putInt(Config.KEY_BUNDLE_BID_ID, bidId);
+                fragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.layout_container, fragment);
+                fragmentTransaction.addToBackStack(name);
+                fragmentTransaction.commit();
+                break;
+            case Config.KEY_FRAGMENT_SUCCESSFUL:
+                fragment = new ViewBidItemsFragment();
+                bundle.putString(Config.KEY_BUNDLE_FRAGMENT, name);
+                bundle.putInt(Config.KEY_BUNDLE_ORDER_ID, orderId);
+                bundle.putInt(Config.KEY_BUNDLE_BID_ID, bidId);
+                fragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.layout_container, fragment);
+                fragmentTransaction.addToBackStack(name);
+                fragmentTransaction.commit();
+                break;
         }
     }
 }

@@ -53,18 +53,18 @@ import in.codehex.facilis.app.AppController;
 import in.codehex.facilis.app.Config;
 import in.codehex.facilis.app.ItemClickListener;
 import in.codehex.facilis.helper.CircleTransform;
-import in.codehex.facilis.model.BidItem;
+import in.codehex.facilis.model.OrderItem;
 
 
 /**
- * A fragment that is used to display successful bids list in the {@link MainActivity} class.
+ * A fragment that is used to display all the deals list in the {@link ViewOrdersFragment} class.
  */
-public class SuccessfulBidsFragment extends Fragment {
+public class AllDealsFragment extends Fragment {
 
     SwipeRefreshLayout mRefreshLayout;
     RecyclerView mRecyclerView;
-    List<BidItem> mBidItemList;
-    SuccessfulBidsAdapter mAdapter;
+    List<OrderItem> mOrderItemList;
+    ViewOrdersAdapter mAdapter;
     SharedPreferences userPreferences;
     LinearLayoutManager mLayoutManager;
     int mCount = 0;
@@ -74,7 +74,7 @@ public class SuccessfulBidsFragment extends Fragment {
     boolean loading = true;
     int visibleThreshold = 5;
 
-    public SuccessfulBidsFragment() {
+    public AllDealsFragment() {
         // Required empty public constructor
     }
 
@@ -83,7 +83,7 @@ public class SuccessfulBidsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_successful_bids, container, false);
+        View view = inflater.inflate(R.layout.fragment_all_deals, container, false);
 
         initObjects(view);
         prepareObjects();
@@ -98,11 +98,11 @@ public class SuccessfulBidsFragment extends Fragment {
      */
     private void initObjects(View view) {
         mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.successful_bid_list);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.all_deal_list);
 
-        mBidItemList = new ArrayList<>();
+        mOrderItemList = new ArrayList<>();
         mLayoutManager = new LinearLayoutManager(getContext());
-        mAdapter = new SuccessfulBidsAdapter(getContext(), mBidItemList);
+        mAdapter = new ViewOrdersAdapter(getContext(), mOrderItemList);
         userPreferences = getActivity().getSharedPreferences(Config.PREF_USER,
                 Context.MODE_PRIVATE);
     }
@@ -133,7 +133,7 @@ public class SuccessfulBidsFragment extends Fragment {
                 }
                 if (!loading && (totalItemCount - visibleItemCount)
                         <= (firstVisibleItem + visibleThreshold)) {
-                    processBids();
+                    processOrders();
                     loading = true;
                 }
             }
@@ -145,7 +145,7 @@ public class SuccessfulBidsFragment extends Fragment {
             public void onRefresh() {
                 resetData();
                 mRefreshLayout.setRefreshing(true);
-                processBids();
+                processOrders();
             }
         });
         mRefreshLayout.post(new Runnable() {
@@ -153,7 +153,7 @@ public class SuccessfulBidsFragment extends Fragment {
             public void run() {
                 resetData();
                 mRefreshLayout.setRefreshing(true);
-                processBids();
+                processOrders();
             }
         });
     }
@@ -169,13 +169,12 @@ public class SuccessfulBidsFragment extends Fragment {
     }
 
     /**
-     * Fetch the successful bid list from the server.
+     * Fetch all the deals list from the server.
      */
-    private void processBids() {
+    private void processOrders() {
         final JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(Config.KEY_API_KEY, "successfull_bids");
-            jsonObject.put(Config.KEY_API_USER, userPreferences.getInt(Config.KEY_PREF_USER_ID, 0));
+            jsonObject.put(Config.KEY_API_DEAL_TYPE, "all_deals");
             jsonObject.put(Config.KEY_API_START, mCount);
             jsonObject.put(Config.KEY_API_END, mCount + 10);
         } catch (JSONException e) {
@@ -186,11 +185,11 @@ public class SuccessfulBidsFragment extends Fragment {
         }
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                Config.API_VIEW_ORDERS, new Response.Listener<String>() {
+                Config.API_HOME_PAGE_DEALS, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 if (mCount == 0) {
-                    mBidItemList.clear();
+                    mOrderItemList.clear();
                     mAdapter.notifyDataSetChanged();
                 }
                 mRefreshLayout.setRefreshing(false);
@@ -203,10 +202,8 @@ public class SuccessfulBidsFragment extends Fragment {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
                             int id = object.getInt(Config.KEY_API_ID);
-                            JSONObject orderObject = object.getJSONObject(Config.KEY_API_ORDER);
-                            int orderId = orderObject.getInt(Config.KEY_API_ID);
-                            int orderOrderId = orderObject.getInt(Config.KEY_API_ORDER_ID);
-                            JSONObject postedByObject = orderObject
+                            int orderId = object.getInt(Config.KEY_API_ORDER_ID);
+                            JSONObject postedByObject = object
                                     .getJSONObject(Config.KEY_API_POSTED_BY);
                             int postedById = postedByObject
                                     .getInt(Config.KEY_API_POSTED_BY_ID);
@@ -214,16 +211,16 @@ public class SuccessfulBidsFragment extends Fragment {
                                     .getString(Config.KEY_API_POSTED_BY_FIRST_NAME);
                             String postedByLastName = postedByObject
                                     .getString(Config.KEY_API_POSTED_BY_LAST_NAME);
-                            String biddingTime = orderObject.getString(Config.KEY_API_BIDDING_TIME);
-                            String days = object.getString(Config.KEY_API_DAYS);
-                            int bidCost = object.getInt(Config.KEY_API_BID_COST);
-                            boolean bidStatus = object.getBoolean(Config.KEY_API_BID_STATUS);
                             String postedDate = object.getString(Config.KEY_API_POSTED_DATE);
+                            String days = object.getString(Config.KEY_API_DAYS);
+                            int leastCost = object.getInt(Config.KEY_API_LEAST_COST);
+                            int average = object.getInt(Config.KEY_API_AVERAGE);
+                            int counter = object.getInt(Config.KEY_API_COUNTER);
                             String userImg = object.getString(Config.KEY_API_USER_IMAGE);
-                            mBidItemList.add(mCount + i, new BidItem(id, orderId,
-                                    orderOrderId, postedById, bidCost, postedByFirstName,
-                                    postedByLastName, biddingTime, days, postedDate,
-                                    userImg, bidStatus));
+                            mOrderItemList.add(mCount + i, new OrderItem(id, orderId,
+                                    postedById, leastCost, average, counter,
+                                    postedByFirstName, postedByLastName,
+                                    postedDate, days, userImg));
                             mAdapter.notifyItemInserted(mCount + i);
                         }
                         mCount = mCount + 10;
@@ -288,74 +285,73 @@ public class SuccessfulBidsFragment extends Fragment {
             }
         };
 
-        AppController.getInstance().addToRequestQueue(stringRequest, "successful_bids");
+        AppController.getInstance().addToRequestQueue(stringRequest, "all_deals");
     }
 
     /**
-     * View adapter for the recycler view of the active bids list item.
+     * View adapter for the recycler view of the view orders list item.
      */
-    private class SuccessfulBidsAdapter
-            extends RecyclerView.Adapter<SuccessfulBidsAdapter.SuccessfulBidsHolder> {
+    private class ViewOrdersAdapter
+            extends RecyclerView.Adapter<ViewOrdersAdapter.ViewOrdersHolder> {
 
         Context context;
-        List<BidItem> mBidItemList;
+        List<OrderItem> mOrderItemList;
 
-        public SuccessfulBidsAdapter(Context context, List<BidItem> mBidItemList) {
+        public ViewOrdersAdapter(Context context, List<OrderItem> mOrderItemList) {
             this.context = context;
-            this.mBidItemList = mBidItemList;
+            this.mOrderItemList = mOrderItemList;
         }
 
         @Override
-        public SuccessfulBidsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewOrdersHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_bid, parent, false);
-            return new SuccessfulBidsHolder(view);
+                    .inflate(R.layout.item_order, parent, false);
+            return new ViewOrdersHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(SuccessfulBidsHolder holder, int position) {
-            final BidItem bidItem = mBidItemList.get(position);
-            String name = bidItem.getPostedByFirstName() + " "
-                    + bidItem.getPostedByLastName();
-            String dp = bidItem.getUserImg();
-            String duration = String.valueOf(bidItem.getDays()) + " left";
-            String posted = bidItem.getPostedDate();
-            String amount = "\u20B9 " + String.valueOf(bidItem.getBidCost());
+        public void onBindViewHolder(ViewOrdersHolder holder, int position) {
+            OrderItem orderItem = mOrderItemList.get(position);
+            String name = orderItem.getPostedByFirstName() + " "
+                    + orderItem.getPostedByLastName();
+            String dp = orderItem.getUserImg();
+            String duration = String.valueOf(orderItem.getDays()) + " left";
+            String posted = String.valueOf(orderItem.getPostedDate());
+            String item = String.valueOf(orderItem.getCounter()) + " items";
             holder.textName.setText(name);
             Picasso.with(context).load(dp)
                     .placeholder(R.drawable.ic_person)
                     .transform(new CircleTransform()).into(holder.imgDp);
             holder.textDuration.setText(duration);
             holder.textPosted.setText(posted);
-            holder.textAmount.setText(amount);
+            holder.textItem.setText(item);
 
             holder.setClickListener(new ItemClickListener() {
                 @Override
                 public void onClick(View view, int position, boolean isLongClick) {
-                    ((MainActivity) getActivity()).showBidItems(Config.KEY_FRAGMENT_SUCCESSFUL,
-                            bidItem.getOrderId(), bidItem.getId());
+                    // TODO: go to place bid fragment
                 }
             });
         }
 
         @Override
         public int getItemCount() {
-            return mBidItemList.size();
+            return mOrderItemList.size();
         }
 
-        protected class SuccessfulBidsHolder extends RecyclerView.ViewHolder
+        protected class ViewOrdersHolder extends RecyclerView.ViewHolder
                 implements View.OnClickListener {
 
-            private TextView textName, textDuration, textPosted, textAmount;
+            private TextView textName, textDuration, textPosted, textItem;
             private ImageView imgDp;
             private ItemClickListener itemClickListener;
 
-            public SuccessfulBidsHolder(View view) {
+            public ViewOrdersHolder(View view) {
                 super(view);
                 textName = (TextView) view.findViewById(R.id.text_name);
                 textDuration = (TextView) view.findViewById(R.id.text_duration);
                 textPosted = (TextView) view.findViewById(R.id.text_posted);
-                textAmount = (TextView) view.findViewById(R.id.text_amount);
+                textItem = (TextView) view.findViewById(R.id.text_item);
                 imgDp = (ImageView) view.findViewById(R.id.img_dp);
                 view.setOnClickListener(this);
             }

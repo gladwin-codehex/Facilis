@@ -25,15 +25,26 @@ public class Config {
     public static final String API_LOGIN = API_DOMAIN_URL + "auth/obtain-token/";
     public static final String API_FORGOT_PASS = API_DOMAIN_URL + "auth/password/reset/confirm/";
     public static final String API_VIEW_ORDERS = API_DOMAIN_URL + "view_orders/";
+    public static final String API_VIEW_BID_ITEMS = API_DOMAIN_URL + "app/view_bid_cost/";
+    public static final String API_HOME_PAGE_DEALS = API_DOMAIN_URL + "home_page_deals/";
+
+    public static final String TAB_TITLE[] = {"ALL DEALS", "HOT DEALS", "LAST MINUTE"};
 
     public static final String PREF_USER = "user";
-
     public static final String KEY_PREF_FIRST_NAME = "first_name";
     public static final String KEY_PREF_LAST_NAME = "last_name";
     public static final String KEY_PREF_USER_ID = "user_id";
     public static final String KEY_PREF_ROLE = "role";
     public static final String KEY_PREF_TOKEN = "token";
     public static final String KEY_PREF_IS_FIRST_LOGIN = "is_first_login";
+
+    public static final String KEY_BUNDLE_FRAGMENT = "fragment";
+    public static final String KEY_BUNDLE_ORDER_ID = "order_id";
+    public static final String KEY_BUNDLE_BID_ID = "bid_id";
+
+    public static final String KEY_FRAGMENT_ACTIVE = "active";
+    public static final String KEY_FRAGMENT_PREVIOUS = "previous";
+    public static final String KEY_FRAGMENT_SUCCESSFUL = "successful";
 
     public static final String KEY_API_USERNAME = "username";
     public static final String KEY_API_PASSWORD = "password";
@@ -75,4 +86,6 @@ public class Config {
     public static final String KEY_API_ITEM_AMOUNT = "item_amount";
     public static final String KEY_API_ERROR = "error";
     public static final String KEY_API_MESSAGE = "message";
+    public static final String KEY_API_BID = "bid";
+    public static final String KEY_API_DEAL_TYPE = "deal_type";
 }

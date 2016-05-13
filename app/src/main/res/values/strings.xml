@@ -20,8 +20,9 @@
 
     <string name="desc_bg">Background Image</string>
     <string name="desc_logo">Logo Image</string>
-    <string name="desc_nav_header">Navigation Header Background Image</string>
+    <string name="desc_header_nav">Navigation Header Background Image</string>
     <string name="desc_dp">Profile Icon</string>
+    <string name="desc_header_view_orders">View Orders Header Image</string>
 
     <string name="hint_email">Email</string>
     <string name="hint_pass">Password</string>
@@ -38,6 +39,7 @@
     <string name="menu_about_us">About Us</string>
     <string name="menu_contact_us">Contact Us</string>
 
+    <string name="action_profile">Profile</string>
     <string name="action_logout">Logout</string>
 
     <string name="drawer_open">Open navigation drawer</string>
@@ -48,6 +50,7 @@
 
     <string name="text_forgot_pass">Forgot Password?</string>
     <string name="text_back_login">Go back to Login</string>
+    <string name="text_header_view_orders">Place your bids\n&amp;\nIncrease your sales</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

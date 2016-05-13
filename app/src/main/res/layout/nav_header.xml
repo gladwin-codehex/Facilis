@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
-                android:contentDescription="@string/desc_nav_header"
+                android:contentDescription="@string/desc_header_nav"
                 android:scaleType="centerCrop"
                 android:src="@drawable/bg"/>
 

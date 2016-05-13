@@ -30,6 +30,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -81,12 +82,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String mail = editEmail.getText().toString().trim();
-                if (mail.isEmpty())
+                if (TextUtils.isEmpty(mail))
                     editEmail.setError(getString(R.string.error_email_empty));
                 else if (!isValidEmail(mail))
                     editEmail.setError(getString(R.string.error_email_invalid));
 
-                if (!mail.isEmpty() && isValidEmail(mail))
+                if (!TextUtils.isEmpty(mail) && isValidEmail(mail))
                     processForgotPass(mail);
             }
         });

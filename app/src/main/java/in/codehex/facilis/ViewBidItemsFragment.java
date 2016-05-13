@@ -36,6 +36,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +65,7 @@ public class ViewBidItemsFragment extends Fragment {
     ViewBidItemsAdapter mAdapter;
     SharedPreferences userPreferences;
     LinearLayoutManager mLayoutManager;
-    int mOrderId, mUserId;
+    int mOrderId, mBidId;
 
     public ViewBidItemsFragment() {
         // Required empty public constructor
@@ -103,6 +104,13 @@ public class ViewBidItemsFragment extends Fragment {
      * Implement and manipulate the objects.
      */
     private void prepareObjects() {
+        Bundle bundle = getArguments();
+        // TODO: handle null value of arguments
+        if (bundle != null) {
+            mOrderId = bundle.getInt(Config.KEY_BUNDLE_ORDER_ID);
+            mBidId = bundle.getInt(Config.KEY_BUNDLE_BID_ID);
+        }
+
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
@@ -131,9 +139,9 @@ public class ViewBidItemsFragment extends Fragment {
     private void processBidItems() {
         final JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(Config.KEY_API_KEY, "view_ordered_items");
-            jsonObject.put(Config.KEY_API_USER, mUserId);
+            jsonObject.put(Config.KEY_API_USER, userPreferences.getInt(Config.KEY_PREF_USER_ID, 0));
             jsonObject.put(Config.KEY_API_ORDER, mOrderId);
+            jsonObject.put(Config.KEY_API_BID, mBidId);
         } catch (JSONException e) {
             // TODO: remove toast
             Toast.makeText(getContext(),
@@ -142,7 +150,7 @@ public class ViewBidItemsFragment extends Fragment {
         }
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                Config.API_VIEW_ORDERS, new Response.Listener<String>() {
+                Config.API_VIEW_BID_ITEMS, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 mViewBidItemList.clear();
@@ -158,6 +166,8 @@ public class ViewBidItemsFragment extends Fragment {
                         String quantity = object.getString(Config.KEY_API_QUANTITY);
                         String brand = object.getString(Config.KEY_API_BRAND);
                         String description = object.getString(Config.KEY_API_DESCRIPTION);
+                        if (TextUtils.isEmpty(description))
+                            description = "-";
                         int delCharge = object.getInt(Config.KEY_API_DEL_CHARGE);
                         double percentage = object.getDouble(Config.KEY_API_PERCENTAGE);
                         int itemAmount = object.getInt(Config.KEY_API_ITEM_AMOUNT);
@@ -249,15 +259,14 @@ public class ViewBidItemsFragment extends Fragment {
         @Override
         public void onBindViewHolder(ViewBidItemsHolder holder, int position) {
             ViewBidItem viewBidItem = mViewBidItemList.get(position);
-            String product = viewBidItem.getName();
-            String quantity = viewBidItem.getQuantity();
-            String brand = viewBidItem.getBrand();
-            String description = viewBidItem.getDescription();
+            String name = viewBidItem.getName() + " - " + viewBidItem.getBrand();
+            String quantity = "Quantity: " + viewBidItem.getQuantity();
+            String description = "Description: " + viewBidItem.getDescription();
             String amount = "\u20B9 " + String.valueOf(viewBidItem.getItemAmount());
-            holder.textProduct.setText(product);
-            holder.textQuantity.setText(quantity);
-            holder.textBrand.setText(brand);
+
+            holder.textName.setText(name);
             holder.textDescription.setText(description);
+            holder.textQuantity.setText(quantity);
             holder.textAmount.setText(amount);
         }
 
@@ -268,14 +277,13 @@ public class ViewBidItemsFragment extends Fragment {
 
         protected class ViewBidItemsHolder extends RecyclerView.ViewHolder {
 
-            private TextView textProduct, textQuantity, textBrand, textDescription, textAmount;
+            private TextView textName, textDescription, textQuantity, textAmount;
 
             public ViewBidItemsHolder(View view) {
                 super(view);
-                textProduct = (TextView) view.findViewById(R.id.text_product);
+                textName = (TextView) view.findViewById(R.id.text_name);
+                textDescription = (TextView) view.findViewById(R.id.text_description);
                 textQuantity = (TextView) view.findViewById(R.id.text_quantity);
-                textBrand = (TextView) view.findViewById(R.id.text_brand);
-                textDescription = (TextView) view.findViewById(R.id.text_comments);
                 textAmount = (TextView) view.findViewById(R.id.text_amount);
             }
         }

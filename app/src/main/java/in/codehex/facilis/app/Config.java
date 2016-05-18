@@ -27,6 +27,7 @@ public class Config {
     public static final String API_VIEW_ORDERS = API_DOMAIN_URL + "view_orders/";
     public static final String API_VIEW_BID_ITEMS = API_DOMAIN_URL + "app/view_bid_cost/";
     public static final String API_HOME_PAGE_DEALS = API_DOMAIN_URL + "home_page_deals/";
+    public static final String API_SET_PROFILE_PIC = API_DOMAIN_URL + "user/set_profile_pic/";
 
     public static final String TAB_TITLE[] = {"ALL DEALS", "HOT DEALS", "LAST MINUTE"};
 
@@ -36,8 +37,11 @@ public class Config {
     public static final String KEY_PREF_FIRST_NAME = "first_name";
     public static final String KEY_PREF_LAST_NAME = "last_name";
     public static final String KEY_PREF_USER_ID = "user_id";
-    public static final String KEY_PREF_ROLE = "role";
+    public static final String KEY_PREF_COMPANY_ID = "company_id";
+    public static final String KEY_PREF_CREDIT_STATUS = "credit_status";
     public static final String KEY_PREF_TOKEN = "token";
+    public static final String KEY_PREF_ROLE = "role";
+    public static final String KEY_USER_IMAGE = "user_image";
     public static final String KEY_PREF_IS_FIRST_LOGIN = "is_first_login";
 
     public static final String KEY_BUNDLE_FRAGMENT = "fragment";

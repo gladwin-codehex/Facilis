@@ -65,6 +65,7 @@
                     android:id="@+id/layout_tab"
                     app:tabMode="fixed"
                     app:tabGravity="fill"
+                    android:background="@color/accent"
                     app:tabBackground="@color/accent"
                     app:tabIndicatorColor="@android:color/white"
                     app:tabSelectedTextColor="@android:color/white"

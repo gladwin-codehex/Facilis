@@ -18,6 +18,9 @@ package in.codehex.facilis;
 
 import com.squareup.picasso.Picasso;
 
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.UploadNotificationConfig;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -108,6 +111,18 @@ public class ProfileActivity extends AppCompatActivity {
      * Upload the new profile image to the server.
      */
     private void uploadDp() {
-        // TODO: upload the file to server
+        try {
+            new MultipartUploadRequest(this, Config.API_SET_PROFILE_PIC +
+                    userPreferences.getInt(Config.KEY_PREF_USER_ID, 0) + "/")
+                    .addFileToUpload(imagePath, "user_image")
+                    .addHeader("Authorization", "Token " +
+                            userPreferences.getString(Config.KEY_PREF_TOKEN, null))
+                    .setNotificationConfig(new UploadNotificationConfig())
+                    .setUtf8Charset()
+                    .setMaxRetries(2)
+                    .startUpload();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

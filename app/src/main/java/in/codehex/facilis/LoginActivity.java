@@ -167,16 +167,22 @@ public class LoginActivity extends AppCompatActivity {
                     String firstName = response.getString(Config.KEY_API_FIRST_NAME);
                     String lastName = response.getString(Config.KEY_API_LAST_NAME);
                     int userId = response.getInt(Config.KEY_API_USER_ID);
+                    int companyId = response.getInt(Config.KEY_PREF_COMPANY_ID);
+                    boolean creditStatus = response.getBoolean(Config.KEY_PREF_CREDIT_STATUS);
                     int role = response.getInt(Config.KEY_API_ROLE);
                     String token = response.getString(Config.KEY_API_TOKEN);
+                    String userImage = response.getString(Config.KEY_API_USER_IMAGE);
 
                     SharedPreferences.Editor editor = userPreferences.edit();
                     editor.putString(Config.KEY_PREF_FIRST_NAME, firstName);
                     editor.putString(Config.KEY_PREF_LAST_NAME, lastName);
                     editor.putInt(Config.KEY_PREF_USER_ID, userId);
+                    editor.putInt(Config.KEY_PREF_COMPANY_ID, companyId);
+                    editor.putBoolean(Config.KEY_PREF_CREDIT_STATUS, creditStatus);
                     editor.putInt(Config.KEY_PREF_ROLE, role);
                     editor.putString(Config.KEY_PREF_TOKEN, token);
-                    editor.commit();
+                    editor.putString(Config.KEY_USER_IMAGE, userImage);
+                    editor.apply();
 
                     mIntent = new Intent(LoginActivity.this, MainActivity.class);
                     mIntent.addFlags(IntentCompat.FLAG_ACTIVITY_CLEAR_TASK

@@ -20,6 +20,9 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import net.gotev.uploadservice.BuildConfig;
+import net.gotev.uploadservice.UploadService;
+
 import android.app.Application;
 import android.text.TextUtils;
 
@@ -40,6 +43,7 @@ public class AppController extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+        UploadService.NAMESPACE = BuildConfig.APPLICATION_ID;
     }
 
     public RequestQueue getRequestQueue() {
